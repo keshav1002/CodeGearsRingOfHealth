@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "97017142129",
+    "firebase_url": "https://ringofhealth-19f0c.firebaseio.com",
+    "project_id": "ringofhealth-19f0c",
+    "storage_bucket": "ringofhealth-19f0c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:97017142129:android:c967aa05657c5d2e",
+        "android_client_info": {
+          "package_name": "com.codegears.ringofheatlh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "97017142129-v04emf2jh5f2vkpmdkpmeaepembgi7oh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codegears.ringofheatlh",
+            "certificate_hash": "ef4ef9aed75ad983ce1dfb550c37f2aa07ee124a"
+          }
+        },
+        {
+          "client_id": "97017142129-8nrgl3rldur6ek4r23bi4sagfb2m4ub6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbP4ojpoM8HzYWaSJkRY1XtnLc71nlA74"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "97017142129-8nrgl3rldur6ek4r23bi4sagfb2m4ub6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

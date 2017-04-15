@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <android.support.v7.widget.Toolbar
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:elevation="4dp"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        app:theme="@style/MyCustomToolBarTheme"
+        app:popupTheme="@style/MyCustomPopupTheme"
+        >
+    </android.support.v7.widget.Toolbar>
+
+    <TextView
+        android:text="BPM"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:id="@+id/textView"
+        android:layout_alignBaseline="@+id/txtBPM"
+        android:layout_alignBottom="@+id/txtBPM"
+        android:layout_toEndOf="@+id/txtBPM"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/heart_off"
+        android:id="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_alignEnd="@+id/textView3"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_alignTop="@+id/textView2" />
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtBPM"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="35dp" />
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView3"
+        android:layout_marginBottom="62dp"
+        android:layout_above="@+id/textView"
+        android:layout_toEndOf="@+id/txtGreeting"
+        android:layout_marginStart="28dp" />
+
+    <TextView
+        android:text=""
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView2"
+
+        android:layout_marginTop="33dp"
+        android:layout_below="@+id/txtGreeting"
+        android:layout_toStartOf="@+id/txtGreeting"
+        android:layout_marginEnd="30dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@mipmap/ic_profile"
+        android:id="@+id/imageView2"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="21dp"
+        android:layout_below="@+id/toolbar"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="Welcome User"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/txtGreeting"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        tools:text="Welcome User"
+        android:layout_alignTop="@+id/imageView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="11dp" />
+
+
+</RelativeLayout>

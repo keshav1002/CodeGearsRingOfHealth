@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_sign_in"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="codegears.ringofhealthfordoctors.SignUpActivity">
+
+    <Button
+        android:id="@+id/btnSubmit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Submit"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="97dp" />
+
+
+    <TextView
+        android:id="@+id/lblUsrName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="48dp"
+        android:text="Username" />
+
+    <EditText
+        android:id="@+id/txtUsrName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="33dp"
+        android:layout_toEndOf="@+id/lblUsrName"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/lblPWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/lblUsrName"
+        android:layout_below="@+id/txtUsrName"
+        android:layout_marginTop="31dp"
+        android:text="Pasword" />
+
+    <EditText
+        android:id="@+id/txtPWord"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtUsrName"
+        android:layout_below="@+id/txtUsrName"
+        android:layout_marginTop="18dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/lblName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/lblPWord"
+        android:layout_below="@+id/txtPWord"
+        android:layout_marginTop="24dp"
+        android:text="Full Name" />
+
+    <EditText
+        android:id="@+id/txtName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtPWord"
+        android:layout_below="@+id/txtPWord"
+        android:layout_marginTop="13dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/lblPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Position"
+        android:layout_below="@+id/txtName"
+        android:layout_alignStart="@+id/lblName" />
+
+    <EditText
+        android:id="@+id/txtPosition"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:layout_alignBaseline="@+id/lblPosition"
+        android:layout_alignBottom="@+id/lblPosition"
+        android:layout_alignStart="@+id/txtName" />
+
+    <TextView
+        android:id="@+id/lblHospName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/lblPosition"
+        android:layout_below="@+id/txtPosition"
+        android:layout_marginTop="22dp"
+        android:text="Hospital Name" />
+
+    <EditText
+        android:id="@+id/txtHospName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtPosition"
+        android:layout_below="@+id/txtPosition"
+        android:layout_marginTop="11dp"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/txtTelNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/txtHospName"
+        android:layout_below="@+id/txtHospName"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:inputType="number" />
+
+    <TextView
+        android:id="@+id/lblTelNo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Telephone Number"
+        android:layout_alignTop="@+id/txtTelNo"
+        android:layout_alignStart="@+id/lblHospName"
+        android:layout_alignEnd="@+id/lblHospName" />
+
+
+</RelativeLayout>
