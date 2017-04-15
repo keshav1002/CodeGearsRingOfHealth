@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,23 +34,23 @@ public class MainActivity extends ActionBarActivity {
     Handler bluetoothIn;
     String userName;
     Toolbar toolbar;
-
+    GPSTracker gps;
     String phoneNo = "0752852826";
     String phoneNo2 = "0766707194";
     String phoneNo3 = "0777071229";
     String message = "Patient is under distress. Address: No 57 Ramakrishna Road, Colombo 6";
 
-    final int handlerState = 0;                        //used to identify handler message
+    final int handlerState = 0;                        //is used to identify the message (from, handler)
     private BluetoothAdapter btAdapter = null;
     private BluetoothSocket btSocket = null;
     private StringBuilder recDataString;
 
     private ConnectedThread myConnectedThread;
 
-    // SPP UUID service - this should work for most devices
+    // A valid SPP UUID service
     private static final UUID BTMODULEUUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 
-    // String for MAC address
+    // MAC Address
     private static String address;
 
     @Override
@@ -77,6 +78,42 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(intent);
             }
         });
+
+
+        gps = new GPSTracker(MainActivity.this);
+
+        // check if GPS enabled
+        if(gps.canGetLocation()){
+
+            double latitude = gps.getLatitude();
+            double longitude = gps.getLongitude();
+
+
+            Geocoder geocoder;
+            List<Address> addresses;
+            geocoder = new Geocoder(this, Locale.getDefault());
+
+            try {
+                addresses = geocoder.getFromLocation(latitude, longitude, 1); // Here 1 represent max location result to returned, by documents it recommended 1 to 5
+                String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                String city = addresses.get(0).getLocality();
+                String state = addresses.get(0).getAdminArea();
+                String country = addresses.get(0).getCountryName();
+                String postalCode = addresses.get(0).getPostalCode();
+                String knownName = addresses.get(0).getFeatureName(); // Only if available else return NULL
+                message+= address+","+city+" "+country;
+                //Toast.makeText(getApplicationContext(), "Your Location is - "+address+" "+city+" "+" "+country+" ", Toast.LENGTH_LONG).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }else{
+            // can't get location
+            // GPS or Network is not enabled
+            // Ask user to enable GPS/network in settings
+            gps.showSettingsAlert();
+        }
+
 
         bluetoothIn = new Handler() {
             public void handleMessage(android.os.Message msg) {
@@ -110,16 +147,25 @@ public class MainActivity extends ActionBarActivity {
                                 Log.d("yo", dataInPrint);
                                 bpm = Integer.parseInt(dataInPrint);
                             }
-//                            if (bpm < 40) {
-//                                count++;
-//                                if (count > 3) {
-//                                    Toast.makeText(getApplicationContext(), "Emergency Detected, Message Sent", Toast.LENGTH_LONG).show();
-//                                    SmsManager.getDefault().sendTextMessage(phoneNo, null, message, null, null);
-//                                    SmsManager.getDefault().sendTextMessage(phoneNo2, null, message, null, null);
-//                                    SmsManager.getDefault().sendTextMessage(phoneNo3, null, message, null, null);
-//                                    count = 0;
-//                                }
-//                            }
+                            if (bpm < 40) {
+                                count++;
+                                if (count > 3) {
+                                    Toast.makeText(getApplicationContext(), "Emergency Detected, Message Sent", Toast.LENGTH_LONG).show();
+                                    SmsManager.getDefault().sendTextMessage(phoneNo, null, message, null, null);
+                                    SmsManager.getDefault().sendTextMessage(phoneNo2, null, message, null, null);
+                                    SmsManager.getDefault().sendTextMessage(phoneNo3, null, message, null, null);
+                                    count = 0;
+                                }
+                            }else if(bpm > 120){
+                                count++;
+                                if(count>3){
+                                    Toast.makeText(getApplicationContext(), "Emergency Detected, Message Sent", Toast.LENGTH_LONG).show();
+                                    SmsManager.getDefault().sendTextMessage(phoneNo, null, message, null, null);
+                                    SmsManager.getDefault().sendTextMessage(phoneNo2, null, message, null, null);
+                                    SmsManager.getDefault().sendTextMessage(phoneNo3, null, message, null, null);
+                                    count = 0;
+                                }
+                            }
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference myRef = database.getReference().child("Users").child(userName).child("BPM");
                             myRef.setValue(String.valueOf(bpm));
@@ -141,8 +187,8 @@ public class MainActivity extends ActionBarActivity {
             }
         };
 
-        btAdapter = BluetoothAdapter.getDefaultAdapter();       // get Bluetooth adapter
-        checkBTState();
+        btAdapter = BluetoothAdapter.getDefaultAdapter();       // get the Bluetooth adapter
+        checkBTState(); // check bluetooth state
 
     }
 
@@ -157,10 +203,10 @@ public class MainActivity extends ActionBarActivity {
     public void onResume() {
         super.onResume();
 
-        //Get MAC address from DeviceListActivity via intent
+        //Get MAC address from DeviceListActivity from devicelist intent
         Intent intent = getIntent();
 
-        //Get the MAC address from the DeviceListActivty via EXTRA
+        //Get the MAC address from the Device List Activty from intent.getStringExtra
         address = intent.getStringExtra("device_address");
 
         //create device and set the MAC address
@@ -174,20 +220,18 @@ public class MainActivity extends ActionBarActivity {
         // Establish the Bluetooth socket connection.
         try {
             btSocket.connect();
-        } catch (IOException e) {
+           } catch (IOException e) {
             try {
                 btSocket.close();
             } catch (IOException e2) {
-                //insert code to deal with this
+
             }
         }
         myConnectedThread = new ConnectedThread(btSocket);
         myConnectedThread.start();
 
 
-        //I send a character when resuming.beginning transmission to check device is connected
-        //If it is not an exception will be thrown in the write method and finish() will be called
-        myConnectedThread.write("x");
+                myConnectedThread.write("x");
     }
 
     @Override
@@ -197,11 +241,11 @@ public class MainActivity extends ActionBarActivity {
             //Don't leave Bluetooth sockets open when leaving activity
             btSocket.close();
         } catch (IOException e2) {
-            //insert code to deal with this
+
         }
     }
 
-    //Checks that the Android device Bluetooth is available and prompts to be turned on if off
+    //Checks if the mobile has Bluetooth and prompts it to be turned on if it is off
     private void checkBTState() {
 
         if (btAdapter == null) {
@@ -239,10 +283,10 @@ public class MainActivity extends ActionBarActivity {
         public void run() {
             byte[] buffer = new byte[256];
             int bytes;
-            // Keep looping to listen for received messages
+            // loop to continue getting messages
             while (true) {
                 try {
-                    bytes = mmInStream.read(buffer);            //read bytes from input buffer
+                    bytes = mmInStream.read(buffer);            //read bytes from the input buffer
                     String readMessage = new String(buffer, 0, bytes);
                     // Send the obtained bytes to the UI Activity via handler
                     bluetoothIn.obtainMessage(handlerState, bytes, -1, readMessage).sendToTarget();
