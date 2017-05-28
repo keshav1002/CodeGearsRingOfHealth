@@ -1,9 +1,14 @@
 package codegears.ringofhealthfordoctors;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -84,6 +89,7 @@ public class PatientListActivity extends AppCompatActivity {
                             if (position == i) {
                                 Intent intent = new Intent(view.getContext(), MainActivity.class);
                                 intent.putExtra("USER_NAME",patientList.get(i));
+                                intent.putExtra("DOCTOR_USER_NAME",userName);
                                 startActivity(intent);
                             }
                         }
@@ -102,4 +108,70 @@ public class PatientListActivity extends AppCompatActivity {
 
 //        Log.d("myTag2", Arrays.toString(myList.toArray()));
     }
+
+    public void deleteProfile(){
+        AlertDialog.Builder alert = new AlertDialog.Builder(PatientListActivity.this);
+        alert.setTitle("Delete Profile");
+        alert.setMessage("Are you sure you want to delete the profile?");
+
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference myRef = database.getReference().child("Doctors").child(userName);
+                myRef.setValue(null);
+                dialog.dismiss();
+                Intent intent = new Intent(PatientListActivity.this,HomePageActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        alert.show();
+
+    }
+
+    @Override
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+
+        inflater.inflate(R.menu.menu_main, menu);
+
+        return true;
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+        switch (item.getItemId()) {
+            case R.id.edit_profile:
+                Intent intent = new Intent(PatientListActivity.this,EditActivity.class);
+                intent.putExtra("DOCTOR_USER_NAME",userName);
+                startActivity(intent);
+                return true;
+            case R.id.delete_profile:
+                deleteProfile();
+                return true;
+            case R.id.logout:
+                Intent intent2 = new Intent(PatientListActivity.this,HomePageActivity.class);
+                startActivity(intent2);
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
